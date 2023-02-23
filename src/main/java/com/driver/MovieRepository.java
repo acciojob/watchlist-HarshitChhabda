@@ -8,49 +8,70 @@ import java.util.*;
 public class MovieRepository {
 
 
-    private HashMap<String, List<String>> movie_director = new HashMap<>();
-    private HashMap<String, Movie> move = new HashMap<>();
-    private HashMap<String, Director> dire = new HashMap<>();
+    private HashMap<String, List<String>> movie_director;
+    private HashMap<String, Movie> move;
+    private HashMap<String, Director> dire;
 
-    public void add_movie(Movie mov) {
-        move.put(mov.getName(), mov);
+    public MovieRepository() {
+        this.movie_director = new HashMap<>();
+        this.move = new HashMap<>();
+        this.dire = new HashMap<>();
     }
 
-    public void add_director(Director dir) {
-        dire.put(dir.getName(), dir);
+    public String add_movie(Movie mov) {
+        String name = mov.getName();
+        if (!move.containsKey(name)) move.put(name, mov);
+
+        return "Movie Added Successfully";
     }
 
-    public void add_movie_director_pair(String mov, String dir) {
+    public String add_director(Director dir) {
+        String name = dir.getName();
+        if (!dire.containsKey(name)) dire.put(name, dir);
 
-        if (move.containsKey(mov) && dire.containsKey(dir)) {
-            List<String> current = new ArrayList<>();
-            if (movie_director.containsKey(dir)) current = movie_director.get(dir);
-            current.add(mov);
-            movie_director.put(dir, current);
+        return "Director added successfully";
+
+    }
+
+    public String add_movie_director_pair(String mov, String dir) {
+
+        if (!move.containsKey(mov) || !dire.containsKey(dir)) return "Movie or Director not found in data base";
+
+        if (movie_director.containsKey(dir)) {
+            movie_director.get(dir).add(mov);
+        } else {
+            List<String> ans = new ArrayList<>();
+            ans.add(mov);
+            movie_director.put(dir, ans);
         }
+        return "Movie-Director Pair added successfully";
     }
 
     public Movie get_movie_by_name(String Movname) {
+        if (!move.containsKey(Movname)) return null;
+
         return move.get(Movname);
     }
 
     public Director get_director_by_name(String dirname) {
+        if (!dire.containsKey(dirname)) return null;
+
         return dire.get(dirname);
     }
 
     public List<String> get_movies_by_director_name(String dir) {
-        List<String> movieList = new ArrayList<>();
-        if (movie_director.containsKey(dir)) {
-            movieList = movie_director.get(dir);
-        }
-        return movieList;
+        return movie_director.get(dir);
     }
 
     public List<String> get_all_movies() {
-        return new ArrayList<>(move.keySet());
+        List<String> ans = new ArrayList<>();
+        for (String name : move.keySet()) {
+            ans.add(name);
+        }
+        return ans;
     }
 
-    public void deleteDirectorByName(String dirname) {
+    public String deleteDirectorByName(String dirname) {
         List<String> e = movie_director.get(dirname);
         for (int i = 0; i < e.size(); i++) {
             if (move.containsKey(e.get(i))) {
@@ -59,9 +80,11 @@ public class MovieRepository {
         }
         movie_director.remove(dirname);
         if (dire.containsKey(dirname)) dire.remove(dirname);
+
+        return "Director and its movies removed successfully";
     }
 
-    public void deleteAllDirectors() {
+    public String deleteAllDirectors() {
         for (String che : movie_director.keySet()) {
             List<String> a = movie_director.get(che);
             for (String name : a) {
@@ -72,6 +95,7 @@ public class MovieRepository {
         for (String dd : dire.keySet()) {
             dire.remove(dd);
         }
+        return "All directors and all of their movies removed successfully";
     }
 }
 

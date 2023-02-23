@@ -9,23 +9,23 @@ import java.util.*;
 public class MovieService {
     @Autowired
     MovieRepository repo;
-    public void add_movie(Movie mov) {
-        repo.add_movie(mov);
+    public String add_movie(Movie mov) {
+        return repo.add_movie(mov);
     }
-    public void add_director(Director dir) {
-      repo.add_director(dir);
-    }
-
-    public void add_movie_director_pair(String dire, String mov) {
-       repo.add_movie_director_pair(dire,mov);
+    public String add_director(Director dir) {
+      return repo.add_director(dir);
     }
 
-    public Movie get_movie_by_name(String name) {
-       return repo.get_movie_by_name(name);
+    public String add_movie_director_pair(String mov, String dir) {
+       return repo.add_movie_director_pair(mov,dir);
     }
 
-    public Director get_director_by_name(String name) {
-        return repo.get_director_by_name(name);
+    public Movie get_movie_by_name(String movName) {
+       return repo.get_movie_by_name(movName);
+    }
+
+    public Director get_director_by_name(String dirName) {
+        return repo.get_director_by_name(dirName);
     }
 
     public List<String> get_movies_by_director_name(String dir) {
@@ -36,12 +36,12 @@ public class MovieService {
         return repo.get_all_movies();
     }
 
-    public void deleteDirectorByName(String Dirname)
+    public String deleteDirectorByName(String Dirname)
     {
-        repo.deleteDirectorByName(Dirname);
+        return repo.deleteDirectorByName(Dirname);
     }
-    public void deleteAllDirectors()
+    public String deleteAllDirectors()
     {
-        repo.deleteAllDirectors();
+        return repo.deleteAllDirectors();
     }
 }
